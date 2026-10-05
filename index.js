@@ -16,23 +16,6 @@ function tierFor(a){
  if(a<100000)return {tier:"₹60,001–₹99,999",gifts:["Red Chef Cook & Serve + 6 Piece Glass Set","Red Chef Hot & Cold – Steelo + Libra Coffee Mug","9 Piece Dinner Set"]};
  return {tier:"₹1,00,000+",gifts:["Red Chef Hot & Cold – Steelo","24 Piece Dinner Set","Red Chef Cook & Serve + Hot Box","Neckband + Hot Box"]};
 }
-function b64u(s){return btoa(unescape(encodeURIComponent(s))).replace(/=+$/,"").replace(/\+/g,"-").replace(/\//g,"_")}
-function ub64(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return decodeURIComponent(escape(atob(s)))}
-async function sign(obj){
- const payload=b64u(JSON.stringify(obj));
- const key=await crypto.subtle.importKey("raw",new TextEncoder().encode("PLANETG-DASARA-2026-DEMO"),{name:"HMAC",hash:"SHA-256"},false,["sign"]);
- const sig=await crypto.subtle.sign("HMAC",key,new TextEncoder().encode(payload));
- return payload+"."+b64u(String.fromCharCode(...new Uint8Array(sig)));
-}
-async function verifyToken(token){
- const p=String(token||"").split(".");
- if(p.length!==2)throw Error("Invalid session.");
- const key=await crypto.subtle.importKey("raw",new TextEncoder().encode("PLANETG-DASARA-2026-DEMO"),{name:"HMAC",hash:"SHA-256"},false,["verify"]);
- const ok=await crypto.subtle.verify("HMAC",key,Uint8Array.from(ub64(p[1]),c=>c.charCodeAt(0)),new TextEncoder().encode(p[0]));
- if(!ok)throw Error("Invalid session.");
- return JSON.parse(ub64(p[0]));
-}
-
 const STAFF_HTML=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Planet G Staff Portal</title>${CSS}</head><body>
 <header><img src="${LOGO}"><div><b>PLANET G</b><small>Staff Portal • Dasara 2026</small></div></header>
 <main class="card">
