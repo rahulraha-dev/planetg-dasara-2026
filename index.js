@@ -57,14 +57,6 @@ async function choose(i){if(locked)return;locked=true;document.querySelectorAll(
 function confetti(){const box=document.createElement('div');box.style='position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden';for(let i=0;i<80;i++){let p=document.createElement('i');p.style='position:absolute;left:'+Math.random()*100+'%;top:-20px;width:8px;height:14px;background:'+['#c71925','#e4b332','#111','#fff'][i%4]+';animation:fall 2.5s linear forwards;animation-delay:'+(Math.random()*.5)+'s';box.appendChild(p)}document.body.appendChild(box);setTimeout(()=>box.remove(),3200)}
 </script></body></html>`;
 
-function tierFor(a){
- if(a>=5000&&a<10000)return {tier:"₹5,000–₹9,999",gifts:["Libra Mug + Planet G Key Chain"]};
- if(a<20000)return {tier:"₹10,000–₹19,999",gifts:["6 Glass Set","Hot Box"]};
- if(a<35000)return {tier:"₹20,000–₹34,999",gifts:["Hot Box + Neckband","Red Chef Cook & Serve","Hot Box + Libra Coffee Mug"]};
- if(a<=60000)return {tier:"₹35,000–₹60,000",gifts:["Red Chef Cook & Serve","Signatize Bluetooth Speaker","Neckband"]};
- if(a<100000)return {tier:"₹60,001–₹99,999",gifts:["Red Chef Cook & Serve + 6 Piece Glass Set","Red Chef Hot & Cold – Steelo + Libra Coffee Mug","9 Piece Dinner Set"]};
- return {tier:"₹1,00,000+",gifts:["Red Chef Hot & Cold – Steelo","24 Piece Dinner Set","Red Chef Cook & Serve + Hot Box","Neckband + Hot Box"]};
-}
 async function hmac(text){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode('PLANETG-DASARA-2026-OTP-SECRET'),{name:'HMAC',hash:'SHA-256'},false,['sign']);const b=await crypto.subtle.sign('HMAC',k,new TextEncoder().encode(text));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function otpFor(mobile,tier,bucket){const h=await hmac(mobile+'|'+tier+'|'+bucket);return String(parseInt(h.slice(0,10),16)%1000000).padStart(6,'0')}
 async function tokenFor(obj){const raw=btoa(unescape(encodeURIComponent(JSON.stringify(obj))));const sig=await hmac(raw);return raw+'.'+sig}
