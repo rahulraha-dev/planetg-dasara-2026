@@ -14,3 +14,4 @@ Cloudflare Workers Builds should use:
 - Deploy command: `npx wrangler deploy`
 - Root directory: `/`
 - Production branch: `main`
+Deployment connected to Cloudflare Workers
